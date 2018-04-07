@@ -37,24 +37,19 @@ if ( (command === 'spotify-this-song') || (command === 'movie-this') ) {
   }
 }
 
+// TODO: do-what-it-says does not work yet. However, the code that
+//       implements it does exist. [see function doWhatItSays()]
+//       It appears that the command and argument that are being
+//       used by the switch statement are correct, but no output
+//       is being produced.
 
-theSwitch:
+if (command === 'do-what-it-says') {
+  doWhatItSays()
+  console.log(command);   // DEBUG
+  console.log(argument);  // DEBUG
+  }
+
 switch (command) {
-
-  // TODO: this case does not work yet. However, the code that implements
-  //       it does exist. [see function doWhatItSays()]
-  //       What I wanted to do here was to change the text of the command
-  //       and then fall through the remaining cases with the new command
-
-  case 'do-what-it-says' :
-      doWhatItSays();
-console.log(command);  // DEBUG
-console.log(argument);  // DEBUG
-      if ( command === null ) {
-        break;
-      }
-      
-      break theSwitch;  // This would not be here if fall through was working
 
   case 'my-tweets' :
       getTweets();
