@@ -3,6 +3,7 @@ var dotenv  = require("dotenv").config();
 var keys    = require("./keys.js");
 var Twitter = require("twit");
 var Spotify = require("node-spotify-api");
+var fs      = require("fs");
 
 var spotify = new Spotify(keys.spotify);
 var client  = new Twitter(keys.twitter);
@@ -36,7 +37,24 @@ if ( (command === 'spotify-this-song') || (command === 'movie-this') ) {
   }
 }
 
+
+theSwitch:
 switch (command) {
+
+  // TODO: this case does not work yet. However, the code that implements
+  //       it does exist. [see function doWhatItSays()]
+  //       What I wanted to do here was to change the text of the command
+  //       and then fall through the remaining cases with the new command
+
+  case 'do-what-it-says' :
+      doWhatItSays();
+console.log(command);  // DEBUG
+console.log(argument);  // DEBUG
+      if ( command === null ) {
+        break;
+      }
+      
+      break theSwitch;  // This would not be here if fall through was working
 
   case 'my-tweets' :
       getTweets();
@@ -63,9 +81,6 @@ switch (command) {
       }
 
       searchOMDB();
-      break;
-
-  case 'do-what-it-says' :
       break;
 
   default :
@@ -187,6 +202,36 @@ function searchOMDB() {
       }
    });
 }
+
+// **************************** do-what-it-says  ************************
+
+function doWhatItSays() {
+    data = fs.readFileSync( "random.txt", "utf8" );
+
+    var contents = data.split(',');
+    var cmd = contents[0].trim();
+    var arg = contents[1].trim();
+
+    if( (cmd !== 'my-tweets') && (cmd !== 'spotify-this-song')
+     && (cmd !== 'movie-this') ) {
+       command = null;  // global variable
+       return
+    }
+
+    // Change the command from do-what-it-says to whatever command is
+    // in the file
+    command = cmd; // global variable
+
+    if ( (arg === undefined) || (arg === "") ) {
+      argument = ''; // global variable
+      return;
+    }
+
+    arg = arg.replace( /\"/g, '' );   // remove the quotation marks
+    arg = arg.replace( /\s/g, '+' );  // TODO: this won't handle multiple consecutive spaces
+    argument = arg;  // global variable
+}
+
 
 // **************************** Usage ***********************************
 function usage() {
