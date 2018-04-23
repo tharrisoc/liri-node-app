@@ -2,7 +2,8 @@
 Language Interpretation and Recognition Interface
 
 This script can perform three operations:
-    . Read and display Tweets from the fake user BrutusShark
+
+    . Read and display the somewhat humorous Tweets from the fake user BrutusShark
       e.g. node liri.js my-tweets
 
     . Retrieve data about a song from spotify.com
